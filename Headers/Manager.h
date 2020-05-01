@@ -6,19 +6,23 @@
 #include <regex>
 #include "LedHandler.h"
 #include "NetworkHandler.h"
+#include "UtilsProvider.h"
+
 using namespace std;
 
 class Manager
 {
 private:
 	LedHandler* ledManager;
+	NetworkHandler* networkHandler;
+
+	void readTemperatureFile(ifstream*, string*);
 public:
-	Manager(LedHandler*);
+	Manager(LedHandler*, NetworkHandler*);
 	~Manager();
 
 	void checkCommandToExecute(string);
-	list<string> splitStringIntoList(string, char);
-
+	void closeService(int);
 	bool rainbowstart_Match(string);
-	void temperatureThread(string, NetworkHandler*);
+	void temperatureThread(string, int, int);
 };

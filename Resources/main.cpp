@@ -14,21 +14,21 @@ using namespace std;
 
 void CloseService(int);
 
-NetworkHandler* server;
+NetworkHandler* networkHandler;
 LedHandler* ledManager;
-Manager* tratPiManager;
+Manager* manager;
 
 int main()
 {
-	server = new NetworkHandler(5555);
+	networkHandler = new NetworkHandler(5555);
 	ledManager = new LedHandler(RED_PIN, GREEN_PIN, BLU_PIN);
-	tratPiManager = new Manager(ledManager);
+	manager = new Manager(ledManager, networkHandler);
 
 	const string temperaturePath("/sys/bus/w1/devices/28-020d9245dc47/w1_slave");
 
 	ifstream file;
 	cerr << "\nTratPi Server (C++ 11)\n";
-	server->initializeSocket();
+	networkHandler->initializeSocket();
 
 	//initializing PIGPIO
 
@@ -45,24 +45,24 @@ int main()
 	do
 	{
 		cerr << "Waiting for rack-pc connection...\n";
-		if (server->acceptConnection())
+		if (networkHandler->acceptConnection())
 		{
 			string command;
 			char buffer[64];
 
-			thread temperatureThread(&Manager::temperatureThread, tratPiManager, temperaturePath, server);
+			thread temperatureThread(&Manager::temperatureThread, manager, temperaturePath, 4000000, 1000000);
 			temperatureThread.detach();
 
-			cerr << "Connected to: " << inet_ntoa(server->getClientAddress().sin_addr) << endl;
+			cerr << "Connected to: " << inet_ntoa(networkHandler->getClientAddress().sin_addr) << endl;
 			do
 			{
-				int bytesLength = recv(server->getClientSocket(), buffer, sizeof(buffer), 0);
+				int bytesLength = recv(networkHandler->getClientSocket(), buffer, sizeof(buffer), 0);
 				string message(buffer, bytesLength);
-				cerr << "Command: " << message << endl;
-				tratPiManager->checkCommandToExecute(command);
+				cerr << "Received: " << message << endl;
+				manager->checkCommandToExecute(command);
 			} while (command.compare("disconnecting") != 0);
 
-			server->setConnected(false);
+			networkHandler->setConnected(false);
 
 			cerr << "Rack-pc disconnected\n";
 		}
@@ -72,12 +72,6 @@ int main()
 
 void CloseService(int signal)
 {
-	cerr << "\nExecuting last procedures...\n";
-	cerr << "Closing service\n";
-	server->writeToClient("disconnecting");
-	ledManager->killRainbowThread();
-	usleep(500000);
-	gpioTerminate();
-	server->~NetworkHandler();
+	manager->closeService(signal);
 	exit(0);
 }

@@ -9,27 +9,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Manager.h">
+    <ClInclude Include="Headers\LedHandler.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LedHandler.h">
+    <ClInclude Include="Headers\Manager.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkHandler.h">
+    <ClInclude Include="Headers\NetworkHandler.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\UtilsProvider.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Manager.cpp">
+    <ClCompile Include="Resources\LedHandler.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="LedHandler.cpp">
+    <ClCompile Include="Resources\main.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkHandler.cpp">
+    <ClCompile Include="Resources\Manager.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Resources\NetworkHandler.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\UtilsProvider.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>

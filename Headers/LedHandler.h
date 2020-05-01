@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <pigpio.h>
+#include <unistd.h>
 #include <iostream>
 #include <math.h>
 using namespace std;
@@ -11,10 +12,12 @@ private:
 	recursive_mutex lock_mutex;
 	int redPin, greenPin, bluPin;
 	bool stopRainbow;
+	int currentRate;
 public:
-	void rainbowThread(int);
+	void startRainbow(int);
 	int offDelayFunction(int);
-	void killRainbowThread();
+	void killRainbow();
+	void waitForRainbowKill();
 
 	LedHandler(int, int, int);
 	~LedHandler();

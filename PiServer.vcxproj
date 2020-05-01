@@ -35,15 +35,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LedHandler.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Manager.cpp" />
-    <ClCompile Include="NetworkHandler.cpp" />
+    <ClCompile Include="Resources\LedHandler.cpp" />
+    <ClCompile Include="Resources\main.cpp" />
+    <ClCompile Include="Resources\Manager.cpp" />
+    <ClCompile Include="Resources\NetworkHandler.cpp" />
+    <ClCompile Include="Resources\UtilsProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LedHandler.h" />
-    <ClInclude Include="Manager.h" />
-    <ClInclude Include="NetworkHandler.h" />
+    <ClInclude Include="Headers\LedHandler.h" />
+    <ClInclude Include="Headers\Manager.h" />
+    <ClInclude Include="Headers\NetworkHandler.h" />
+    <ClInclude Include="Headers\UtilsProvider.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{b3f2ede5-93a9-4a51-a062-ad3c836694f3}</ProjectGuid>
@@ -89,12 +91,16 @@
     <SourcePath>
     </SourcePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <IncludePath>$(MSBuildProjectDirectory)/Headers</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <AdditionalOptions>-lrt -lpigpio -pthread %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
       <AdditionalOptions>-lpigpio -lrt -pthread %(AdditionalOptions)</AdditionalOptions>

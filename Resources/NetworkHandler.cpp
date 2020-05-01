@@ -13,7 +13,7 @@ NetworkHandler::~NetworkHandler()
 
 void NetworkHandler::writeToClient(string message)
 {
-	if (clientSocket == -1) return;
+	if (clientSocket == -1 || clientSocket == 0) return;
 	message = message + "\n";
 	char* wbuff = (char*)message.c_str();
 	int wbytes = write(clientSocket, wbuff, strlen(wbuff));

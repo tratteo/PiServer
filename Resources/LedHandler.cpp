@@ -8,17 +8,24 @@ LedHandler::LedHandler(int redPin, int greenPin, int bluPin)
 	stopRainbow = false;
 }
 
-void LedHandler::killRainbowThread()
+void LedHandler::killRainbow()
 {
 	lock_guard<recursive_mutex> lock(lock_mutex);
 	stopRainbow = true;
+}
+
+void LedHandler::waitForRainbowKill()
+{
+	killRainbow();
+	usleep(260 * offDelayFunction(currentRate));
+	currentRate = 0;
 }
 
 LedHandler::~LedHandler()
 {
 }
 
-void LedHandler::rainbowThread(int rate)
+void LedHandler::startRainbow(int rate)
 {
 	if (rate == 0)
 		rate = 10;
@@ -26,6 +33,8 @@ void LedHandler::rainbowThread(int rate)
 	cout << "Rainbow running with delay: " << rate << "ms" << endl;
 
 	rate = rate * 100;
+
+	currentRate = rate;
 
 	int red = 0;
 	int green = 0;
